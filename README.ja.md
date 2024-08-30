@@ -57,7 +57,7 @@ deno task test
 ## License
 
 [MIT](LICENSE)
-cat << 'EOF' > README.md
+
 # グローバルパッケージアップデーター
 
 このツールは、複数のパッケージマネージャー（npm、yarn、pnpm、bun）でグローバルにインストールされたパッケージの更新をチェックします。
