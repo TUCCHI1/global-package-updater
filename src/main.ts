@@ -1,4 +1,4 @@
-import { parse } from "https://deno.land/std@0.181.0/flags/mod.ts";
+import { parseArgs } from "std/cli/parse_args.ts";
 
 interface PackageManager {
   name: string;
@@ -145,7 +145,7 @@ async function checkUpdates(): Promise<string> {
 }
 
 if (import.meta.main) {
-  const args = parse(Deno.args);
+  const args = parseArgs(Deno.args);
   if (args.cron) {
     const result = await checkUpdates();
     if (result) {

@@ -31,5 +31,6 @@
         "recommended"
       ]
     }
-  }
+  },
+  "importMap": "import_map.json"
 }
