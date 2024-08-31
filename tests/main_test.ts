@@ -2,7 +2,6 @@
 
 import { assertFalse, assertMatch, assertRejects, assertStrictEquals } from 'std/assert/mod.ts';
 import {
-  checkUpdatesForManager,
   getGlobalPackages,
   isPackageManagerInstalled,
 } from '../src/services/packageManager.ts';
