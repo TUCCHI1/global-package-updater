@@ -11,3 +11,6 @@ Thumbs.db
 
 # Project specific
 update_log.txt
+
+# Coverage
+coverage/
