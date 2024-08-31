@@ -1,10 +1,7 @@
 // tests/main_test.ts
 
 import { assertFalse, assertMatch, assertRejects, assertStrictEquals } from 'std/assert/mod.ts';
-import {
-  getGlobalPackages,
-  isPackageManagerInstalled,
-} from '../src/services/packageManager.ts';
+import { getGlobalPackages, isPackageManagerInstalled } from '../src/services/packageManager.ts';
 import { getLatestVersion } from '../src/utils/version.ts';
 import { packageManagers } from '../src/config/packageManagers.ts';
 import { Package, PackageManager } from '../src/types/index.ts';
