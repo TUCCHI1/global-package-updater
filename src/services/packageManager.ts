@@ -1,10 +1,10 @@
-import { PackageManager, Package } from "../types/index.ts";
-import { runCommand } from "../utils/command.ts";
-import { getLatestVersion } from "../utils/version.ts";
+import { Package, PackageManager } from '../types/index.ts';
+import { runCommand } from '../utils/command.ts';
+import { getLatestVersion } from '../utils/version.ts';
 
 export async function isPackageManagerInstalled(pm: PackageManager): Promise<boolean> {
   try {
-    await runCommand(pm.name, ["--version"]);
+    await runCommand(pm.name, ['--version']);
     return true;
   } catch {
     return false;
@@ -35,30 +35,30 @@ export function updatePackageVersions(packages: Package[]): Promise<Package[]> {
         console.error(`Error updating version for ${pkg.name}: ${error}`);
         return pkg;
       }
-    })
+    }),
   );
 }
 
 function logUpdates(pm: string, packages: Package[]): string {
   let log = `Checking ${pm} global packages:\n`;
   if (packages.length === 0) {
-    log += "No global packages found.\n";
+    log += 'No global packages found.\n';
   } else {
     packages.forEach((pkg) => {
       if (pkg.currentVersion !== pkg.latestVersion) {
         const message = `${pkg.name}: ${pkg.currentVersion} -> ${pkg.latestVersion}`;
         console.log(message);
-        log += message + "\n";
+        log += message + '\n';
       }
     });
   }
-  return log + "\n";
+  return log + '\n';
 }
 
 export async function checkUpdatesForManager(pm: PackageManager): Promise<string> {
   if (!(await isPackageManagerInstalled(pm))) {
     console.log(`${pm.name} is not installed.`);
-    return "";
+    return '';
   }
   console.log(`Checking ${pm.name} global packages...`);
   const packages = await getGlobalPackages(pm);
