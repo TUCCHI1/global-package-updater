@@ -17,8 +17,8 @@ const packageManagers: PackageManager[] = [
     name: "npm",
     checkCommand: ["npm", "list", "-g", "--depth=0", "--json"],
     parseOutput: (output: string) => {
-      const json = JSON.parse(output);
-      return Object.entries(json.dependencies).map(([name, info]: [string, any]) => ({
+      const json = JSON.parse(output) as { dependencies: Record<string, { version: string }> };
+      return Object.entries(json.dependencies).map(([name, info]) => ({
         name,
         currentVersion: info.version,
         latestVersion: "",
@@ -44,8 +44,8 @@ const packageManagers: PackageManager[] = [
     name: "pnpm",
     checkCommand: ["pnpm", "list", "-g", "--depth=0", "--json"],
     parseOutput: (output: string) => {
-      const json = JSON.parse(output);
-      return json.map((pkg: any) => ({
+      const json = JSON.parse(output) as Array<{ name: string; version: string }>;
+      return json.map((pkg) => ({
         name: pkg.name,
         currentVersion: pkg.version,
         latestVersion: "",
@@ -76,14 +76,9 @@ const packageManagers: PackageManager[] = [
  */
 async function isPackageManagerInstalled(pm: PackageManager): Promise<boolean> {
   try {
-    const process = Deno.run({
-      cmd: [pm.name, "--version"],
-      stdout: "null",
-      stderr: "null",
-    });
-    const status = await process.status();
-    process.close();
-    return status.success;
+    const command = new Deno.Command(pm.name, { args: ["--version"] });
+    const { success } = await command.output();
+    return success;
   } catch {
     return false;
   }
@@ -95,13 +90,9 @@ async function isPackageManagerInstalled(pm: PackageManager): Promise<boolean> {
  * @returns A promise that resolves to an array of Package objects.
  */
 async function getGlobalPackages(pm: PackageManager): Promise<Package[]> {
-  const process = Deno.run({
-    cmd: pm.checkCommand,
-    stdout: "piped",
-  });
-  const output = await process.output();
-  process.close();
-  return pm.parseOutput(new TextDecoder().decode(output));
+  const command = new Deno.Command(pm.checkCommand[0], { args: pm.checkCommand.slice(1) });
+  const { stdout } = await command.output();
+  return pm.parseOutput(new TextDecoder().decode(stdout));
 }
 
 /**
@@ -110,13 +101,9 @@ async function getGlobalPackages(pm: PackageManager): Promise<Package[]> {
  * @returns A promise that resolves to the latest version string.
  */
 async function getLatestVersion(packageName: string): Promise<string> {
-  const process = Deno.run({
-    cmd: ["npm", "view", packageName, "version"],
-    stdout: "piped",
-  });
-  const output = await process.output();
-  process.close();
-  return new TextDecoder().decode(output).trim();
+  const command = new Deno.Command("npm", { args: ["view", packageName, "version"] });
+  const { stdout } = await command.output();
+  return new TextDecoder().decode(stdout).trim();
 }
 
 /**
