@@ -10,7 +10,7 @@ This tool checks for updates in globally installed packages across multiple pack
 
 1. Clone this repository:
    \`\`\`
-   git clone https://github.com/yourusername/global-package-updater.git
+   git clone https://github.com/TUCCHI1/global-package-updater.git
    cd global-package-updater
    \`\`\`
 
@@ -70,7 +70,7 @@ deno task test
 
 1. このリポジトリをクローンします：
    ```bash
-   git clone https://github.com/yourusername/global-package-updater.git
+   git clone https://github.com/TUCCHI1/global-package-updater.git
    cd global-package-updater
    ```
 
